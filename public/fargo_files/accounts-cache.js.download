@@ -1,0 +1,41 @@
+
+  (function main() {
+  var hashedNames = [
+  "runtime.e82ece03ce43740121c1.js",
+  "vendor.ddbb72c561669056878f.js",
+  "main.965f60f6327d1e6326db.js",
+  "wfui.da0b5f51099fc808562d.js",
+  "main.9bf2182b050608915e61.css",
+  "wfui.79b4ae9a778a9df1d931.css"
+]
+  function miniGET(src) {
+  var xhr = new XMLHttpRequest()
+  xhr.open('GET', src)
+  xhr.send()
+}
+  function getSelfScriptSrc() {
+  var allScripts = document.getElementsByTagName('script')
+  var scriptCount
+  for (scriptCount = 0; scriptCount < allScripts.length; ++scriptCount) {
+    if (
+      allScripts[scriptCount].src &&
+      allScripts[scriptCount].getAttribute('src').indexOf('accounts-cache') !== -1
+    ) {
+      return allScripts[scriptCount].getAttribute('src').replace('short/accounts-cache.js', '')
+    }
+  }
+  return ''
+}
+  (function cacheAccountsAssetsInJs() {
+  var commonPath = getSelfScriptSrc()
+  hashedNames.forEach(function nameHandler(name) {
+    if (name.indexOf('.js') !== -1) {
+      miniGET(commonPath.concat('public/js/', name))
+    }
+    if (name.indexOf('.css') !== -1) {
+      miniGET(commonPath.concat('public/stylesheets/', name))
+    }
+  })
+}())
+  }())
+  

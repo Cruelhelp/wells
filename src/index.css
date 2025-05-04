@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-wells;
+  }
+}
+
+@layer components {
+  .link-hover {
+    @apply hover:underline cursor-pointer;
+  }
+
+  .footer-link {
+    @apply text-sm text-gray-700 hover:underline cursor-pointer;
+  }
+
+  .gray-card {
+    @apply bg-wellsfargo-beige rounded-md shadow-sm p-8 m-4;
+  }
+
+  .primary-button {
+    @apply bg-wellsfargo-red text-white rounded-full py-2 px-6 hover:bg-red-700 transition-colors;
+  }
+
+  .secondary-button {
+    @apply border border-gray-300 rounded-full py-2 px-6 hover:bg-gray-100 transition-colors;
+  }
+
+  .outline-button {
+    @apply border border-gray-300 rounded-full py-2 px-6 text-gray-700 hover:bg-gray-100 transition-colors;
+  }
+}
+
+/* Custom Sonner Toast Styles */
+[data-sonner-toast][data-type="success"] {
+  @apply bg-wellsfargo-red text-white border-transparent; /* Use WF red, white text, remove default border */
+}
+
+/* Optional: Style the description text within the success toast if needed */
+[data-sonner-toast][data-type="success"] [data-description] {
+  @apply text-gray-200; /* Lighter text for description if present */
+}
+
+/* Optional: Style close button if needed */
+[data-sonner-toast][data-type="success"] [data-close-button] {
+  @apply text-white opacity-70 hover:opacity-100;
+}
