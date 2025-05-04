@@ -28,25 +28,30 @@ export default function TopNavBar() {
           </Link>
         </div>
         {/* Right Side: Icons, Sign Off, Welcome, separated by dividers */}
-        <div className="flex items-center">
-          <button className="hover:bg-white/10 rounded-full p-2">
+        <div className="flex items-center space-x-2">
+          {/* Hide Search on mobile */}
+          <button className="hidden md:inline-flex hover:bg-white/10 rounded-full p-2">
             <Search className="h-5 w-5" />
           </button>
-          <span className="h-6 w-px bg-white/40 mx-2" />
-          <button className="hover:bg-white/10 rounded-full p-2">
+          {/* Hide divider on mobile */}
+          <span className="hidden md:block h-6 w-px bg-white/40 mx-1" /> 
+          {/* Hide Mail on mobile */}
+          <button className="hidden md:inline-flex hover:bg-white/10 rounded-full p-2">
             <Mail className="h-5 w-5" />
           </button>
-          <span className="h-6 w-px bg-white/40 mx-2" />
+          {/* Hide divider on mobile */}
+          <span className="hidden md:block h-6 w-px bg-white/40 mx-1" />
+          {/* Sign Off Button - Always visible */}
           <div className="flex items-center">
-            <Lock className="h-4 w-4 text-white" />
+            <Lock className="hidden md:inline-block h-4 w-4 text-white mr-1" /> {/* Hide Lock icon on mobile for space */}
             <button
               onClick={handleLogout}
-              className="px-4 py-1 rounded font-semibold text-sm text-white hover:underline focus:outline-none relative"
+              className="px-2 md:px-4 py-1 rounded font-semibold text-sm text-white hover:underline focus:outline-none relative"
               disabled={isSigningOff}
             >
               {isSigningOff ? (
                 <span className="flex items-center justify-center">
-                  <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
+                  <span className="w-4 h-4 md:w-5 md:h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
                   Signing Off...
                 </span>
               ) : (
@@ -54,13 +59,17 @@ export default function TopNavBar() {
               )}
             </button>
           </div>
-          <span className="h-6 w-px bg-white/40 mx-2" />
-          <div className="flex items-center space-x-2 cursor-pointer">
+          {/* Hide divider on mobile */}
+          <span className="hidden md:block h-6 w-px bg-white/40 mx-1" />
+          {/* Welcome Section - Adjust for mobile */}
+          <div className="flex items-center space-x-1 md:space-x-2 cursor-pointer">
+            {/* User Icon - Always visible */}
             <span className="inline-flex items-center justify-center rounded-full bg-white/20 p-1">
-              <User className="h-5 w-5" />
+              <User className="h-4 w-4 md:h-5 md:w-5" />
             </span>
-            <span className="font-semibold text-sm">Welcome, Bobby</span>
-            <ChevronDown className="h-4 w-4" />
+            {/* Hide text and chevron on mobile */}
+            <span className="hidden md:inline font-semibold text-sm">Welcome, Bobby</span>
+            <ChevronDown className="hidden md:inline-block h-4 w-4" />
           </div>
         </div>
       </div>
