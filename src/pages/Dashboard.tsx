@@ -7,7 +7,7 @@ import TransactionHistory from '@/components/dashboard/TransactionHistory';
 import ActivityCenter from '@/components/dashboard/ActivityCenter';
 import SecurityCenter from '@/components/dashboard/SecurityCenter';
 import Footer from '@/components/Footer';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Menu, X } from 'lucide-react';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import { useAuth } from '@/contexts/AuthContext';
 import TransactionSummary from '@/components/dashboard/TransactionSummary';
@@ -41,6 +41,7 @@ const Dashboard = () => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { currentUser } = useAuth();
 
   useEffect(() => {
@@ -104,13 +105,34 @@ const Dashboard = () => {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <TopNavBar />
       <DashboardMenuBar />
-      <div className="flex flex-1 container mx-auto py-6 px-4 h-full min-h-[700px]">
+      <div className="flex flex-1 container mx-auto py-4 md:py-6 px-4 h-full min-h-[700px]">
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden fixed bottom-4 right-4 z-50 bg-wellsfargo-red text-white p-3 rounded-full shadow-lg"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40">
+            <div className="absolute right-0 top-0 h-full w-80 bg-white shadow-lg overflow-y-auto">
+              <div className="p-4">
+                <ActivityCenter />
+                <SecurityCenter />
+                <DashboardRightSidebar />
+              </div>
+            </div>
+          </div>
+        )}
+
         <main className="flex-grow pr-0 md:pr-8">
           <div className="bg-[#fff8e1] border-l-4 border-[#eab308] text-[#a16207] p-4 rounded mb-6 flex items-start space-x-3 transition-colors duration-200 hover:border-yellow-600 cursor-pointer">
             <svg className="h-6 w-6 text-[#eab308] mt-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12A9 9 0 1 1 3 12a9 9 0 0 1 18 0Z" /></svg>
             <div>
               <div className="font-semibold mb-1">Important Notice</div>
-              <div>
+              <div className="text-sm md:text-base">
                 Please be advised that the payment of $17,342 required to release the funds deposited on
                 <span className="font-bold text-[#a16207] underline mx-1 hover:text-[#854d0e] hover:underline hover:decoration-2 hover:decoration-[#854d0e] transition-colors cursor-pointer">April 23rd</span>
                 was due on
@@ -121,7 +143,7 @@ const Dashboard = () => {
                 <div className="mt-4">
                   <button
                     onClick={() => navigate('/statement')}
-                    className="bg-wellsfargo-red text-white px-4 py-2 rounded-full font-semibold shadow hover:bg-red-700 transition"
+                    className="bg-wellsfargo-red text-white px-4 py-2 rounded-full font-semibold shadow hover:bg-red-700 transition w-full md:w-auto"
                   >
                     View Statement
                   </button>
@@ -130,10 +152,10 @@ const Dashboard = () => {
             </div>
           </div>
           <AccountSummary accounts={accounts} />
-          <div className="mt-8">
+          <div className="mt-6 md:mt-8">
             <TransactionSummary transactions={transactions} />
           </div>
-          <div className="mt-8">
+          <div className="mt-6 md:mt-8">
             <TransactionHistory transactions={transactions} accounts={accounts} />
           </div>
         </main>

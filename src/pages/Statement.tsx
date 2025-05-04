@@ -29,31 +29,31 @@ const Statement = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <TopNavBar />
-      <main className="flex-grow container mx-auto py-4 px-2 max-w-2xl">
+      <main className="flex-grow container mx-auto py-4 px-4 md:px-2 max-w-2xl">
         <div className="mb-6 flex items-center gap-3">
-          <svg className="h-8 w-8 text-wellsfargo-red" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20z" /></svg>
+          <svg className="h-6 w-6 md:h-8 md:w-8 text-wellsfargo-red" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20z" /></svg>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Holds & Reports Center</h1>
-            <p className="text-gray-700 text-sm">Review and resolve important account holds, pending actions, and reports that require your attention.</p>
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900">Holds & Reports Center</h1>
+            <p className="text-gray-700 text-xs md:text-sm">Review and resolve important account holds, pending actions, and reports that require your attention.</p>
           </div>
         </div>
         <button
           onClick={() => window.location.href = '/dashboard'}
-          className="mb-4 flex items-center gap-2 bg-white text-wellsfargo-red border border-wellsfargo-red px-3 py-1 rounded-full font-semibold shadow-sm hover:bg-wellsfargo-red hover:text-white transition-all duration-200 text-sm"
+          className="mb-4 flex items-center gap-2 bg-white text-wellsfargo-red border border-wellsfargo-red px-3 py-1 rounded-full font-semibold shadow-sm hover:bg-wellsfargo-red hover:text-white transition-all duration-200 text-sm w-full md:w-auto justify-center"
         >
           <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
           Back to Dashboard
         </button>
         <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
-          <h2 className="px-4 pt-4 pb-2 font-semibold text-lg text-wellsfargo-red">Items Requiring Your Attention</h2>
+          <h2 className="px-4 pt-4 pb-2 font-semibold text-base md:text-lg text-wellsfargo-red">Items Requiring Your Attention</h2>
           <ul className="divide-y divide-gray-200">
             <li>
               <details open className="group">
-                <summary className="flex items-center justify-between cursor-pointer px-4 py-3 font-semibold text-wellsfargo-red text-base group-open:border-b group-open:border-gray-200">
+                <summary className="flex items-center justify-between cursor-pointer px-4 py-3 font-semibold text-wellsfargo-red text-sm md:text-base group-open:border-b group-open:border-gray-200">
                   <span>Deposit Hold & Fee Breakdown</span>
                   <svg className="h-5 w-5 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
                 </summary>
-                <div className="px-4 py-3 space-y-2 text-sm text-gray-700">
+                <div className="px-4 py-3 space-y-2 text-xs md:text-sm text-gray-700">
                   <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
                     <div className="font-semibold text-blue-900 mb-1">Deposit Details</div>
                     <div className="text-blue-800">A deposit of <span className="font-bold">{formatCurrency(depositsCredits)}</span> was made to your account on <span className="font-bold">April 23, 2025</span> from Publishers Clearing House. These funds are currently on hold pending the required processing fee. <span className='font-bold text-red-600'>The payment was due on April 28th and is now overdue.</span></div>
@@ -76,7 +76,7 @@ const Statement = () => {
                     </div>
                   </div>
                   <div className="text-red-600 flex items-center space-x-2 p-3 border border-red-600 rounded-md text-xs mt-2">
-                    <InformationCircleIcon className="h-4 w-4" />
+                    <InformationCircleIcon className="h-4 w-4 flex-shrink-0" />
                     <p>Please contact our agent to release the funds. A processing fee is required. Contact us at 1-800-555-0199.</p>
                   </div>
                 </div>

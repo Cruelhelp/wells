@@ -32,9 +32,7 @@ export default function HeroSection() {
       if (validCredentials.some(
         (cred) => cred.username === username && cred.password === password
       )) {
-        // Simulate login delay
         await new Promise((resolve) => setTimeout(resolve, 2000));
-        // Redirect to dashboard
         navigate('/dashboard');
         toast.success('Login successful!');
       } else {
@@ -50,13 +48,19 @@ export default function HeroSection() {
   };
 
   return (
-    <section
-      className="relative w-full min-h-[500px] flex flex-col md:flex-row items-stretch bg-white"
-      style={{ background: 'linear-gradient(90deg, #fff 60%, rgba(255,255,255,0.7) 80%, transparent 100%)' }}
-    >
-      {/* Left: Login Card */}
-      <div className="flex flex-col justify-start items-start w-full md:w-[400px] p-6 md:pl-12 pt-8 z-10">
-        <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 w-full max-w-xs p-6" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
+    <section className="relative w-full min-h-[500px] flex flex-col items-center bg-white">
+      {/* Mobile Background Image */}
+      <div className="md:hidden absolute inset-0 w-full h-full">
+        <img
+          src="/hero.avif"
+          alt="Wells Fargo Hero"
+          className="w-full h-full object-cover opacity-20"
+        />
+      </div>
+
+      {/* Login Card - Mobile First */}
+      <div className="w-full max-w-[400px] p-4 md:p-6 md:pl-12 pt-8 z-10">
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-200 w-full p-4 md:p-6">
           <h2 className="text-xl font-semibold mb-1">Good evening</h2>
           <p className="text-gray-600 text-sm mb-4">Sign on to manage your accounts.</p>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -94,10 +98,10 @@ export default function HeroSection() {
                 Save username
               </label>
             </div>
-            <div className="flex items-center justify-between mt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-between mt-2 space-y-3 sm:space-y-0">
               <Button
                 type="submit"
-                className="bg-wellsfargo-red w-2/3 text-white rounded-full text-lg font-semibold py-2 hover:bg-red-700 relative"
+                className="bg-wellsfargo-red w-full sm:w-2/3 text-white rounded-full text-lg font-semibold py-2 hover:bg-red-700 relative"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -108,7 +112,7 @@ export default function HeroSection() {
                   'Sign On'
                 )}
               </Button>
-              <a href="#" className="ml-4 text-blue-700 text-sm font-semibold hover:underline">Enroll</a>
+              <a href="#" className="text-blue-700 text-sm font-semibold hover:underline">Enroll</a>
             </div>
           </form>
           <div className="mt-6 space-y-1 text-sm text-gray-600">
@@ -118,20 +122,27 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
-      {/* Right: Hero Text and Background */}
-      <div className="flex-1 flex flex-col justify-center items-start px-6 md:px-0 relative overflow-hidden">
+
+      {/* Hero Text and Background - Desktop */}
+      <div className="hidden md:flex flex-1 flex-col justify-center items-start px-6 md:px-0 relative overflow-hidden">
         <div className="z-10 max-w-xl md:ml-12 mt-10 md:mt-0">
           <h1 className="text-4xl md:text-5xl font-semibold mb-4 text-gray-900">Say hello to<br />convenient checking</h1>
           <p className="text-lg text-gray-700 mb-6">Explore our checking options and choose the right account for you</p>
           <button className="bg-white border border-gray-400 rounded-full px-6 py-2 font-semibold text-gray-900 hover:bg-gray-100 transition">Get started &gt;&gt;</button>
         </div>
-        {/* Background image on the right */}
         <img
           src="/hero.avif"
           alt="Wells Fargo Hero"
-          className="absolute right-0 top-0 h-full w-2/3 object-cover object-right z-0 pointer-events-none select-none hidden md:block"
+          className="absolute right-0 top-0 h-full w-2/3 object-cover object-right z-0 pointer-events-none select-none"
           style={{ filter: 'brightness(1.05)' }}
         />
+      </div>
+
+      {/* Mobile Hero Text */}
+      <div className="md:hidden w-full px-6 py-8 text-center">
+        <h1 className="text-3xl font-semibold mb-4 text-gray-900">Say hello to convenient checking</h1>
+        <p className="text-base text-gray-700 mb-6">Explore our checking options and choose the right account for you</p>
+        <button className="bg-white border border-gray-400 rounded-full px-6 py-2 font-semibold text-gray-900 hover:bg-gray-100 transition">Get started &gt;&gt;</button>
       </div>
     </section>
   );

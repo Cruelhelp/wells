@@ -1,66 +1,65 @@
-
 import React from 'react';
 import { Facebook, Linkedin, Instagram, Twitter } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-wellsfargo-darkBeige pt-8 pb-4">
-      <div className="container mx-auto">
+    <footer className="bg-wellsfargo-darkBeige pt-6 md:pt-8 pb-4">
+      <div className="container mx-auto px-4 md:px-0">
         {/* Footer links */}
-        <div className="flex flex-wrap mb-6 border-b border-gray-300 pb-4">
-          <div className="w-full md:w-auto mr-6 mb-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:flex flex-wrap mb-6 border-b border-gray-300 pb-4">
+          <div className="w-full md:w-auto mr-6 mb-3">
             <a href="#" className="text-sm text-gray-700 hover:underline">Privacy, Cookies, Security & Legal</a>
           </div>
-          <div className="w-full md:w-auto mr-6 mb-2">
+          <div className="w-full md:w-auto mr-6 mb-3">
             <a href="#" className="text-sm text-gray-700 hover:underline">Do Not Sell or Share My Personal Information</a>
           </div>
-          <div className="w-full md:w-auto mr-6 mb-2">
+          <div className="w-full md:w-auto mr-6 mb-3">
             <a href="#" className="text-sm text-gray-700 hover:underline">Notice of Data Collection</a>
           </div>
-          <div className="w-full md:w-auto mr-6 mb-2">
+          <div className="w-full md:w-auto mr-6 mb-3">
             <a href="#" className="text-sm text-gray-700 hover:underline">General Terms of Use</a>
           </div>
-          <div className="w-full md:w-auto mr-6 mb-2">
+          <div className="w-full md:w-auto mr-6 mb-3">
             <a href="#" className="text-sm text-gray-700 hover:underline">Online Access Agreement</a>
           </div>
-          <div className="w-full md:w-auto mr-6 mb-2">
+          <div className="w-full md:w-auto mr-6 mb-3">
             <a href="#" className="text-sm text-gray-700 hover:underline">Report Fraud</a>
           </div>
-          <div className="w-full md:w-auto mr-6 mb-2">
+          <div className="w-full md:w-auto mr-6 mb-3">
             <a href="#" className="text-sm text-gray-700 hover:underline">About Wells Fargo</a>
           </div>
-          <div className="w-full md:w-auto mr-6 mb-2">
+          <div className="w-full md:w-auto mr-6 mb-3">
             <a href="#" className="text-sm text-gray-700 hover:underline">Careers</a>
           </div>
         </div>
         
-        <div className="flex flex-wrap border-b border-gray-300 pb-6">
-          <div className="w-full md:w-auto mr-6 mb-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:flex flex-wrap border-b border-gray-300 pb-6">
+          <div className="w-full md:w-auto mr-6 mb-3">
             <a href="#" className="text-sm text-gray-700 hover:underline">Diversity and Accessibility</a>
           </div>
-          <div className="w-full md:w-auto mr-6 mb-2">
+          <div className="w-full md:w-auto mr-6 mb-3">
             <a href="#" className="text-sm text-gray-700 hover:underline">Sitemap</a>
           </div>
         </div>
         
         {/* Social Media Icons */}
-        <div className="flex space-x-4 my-6">
-          <a href="#" className="text-gray-800">
+        <div className="flex justify-center md:justify-start space-x-6 my-6">
+          <a href="#" className="text-gray-800 hover:text-gray-600">
             <Facebook size={20} />
           </a>
-          <a href="#" className="text-gray-800">
+          <a href="#" className="text-gray-800 hover:text-gray-600">
             <Linkedin size={20} />
           </a>
-          <a href="#" className="text-gray-800">
+          <a href="#" className="text-gray-800 hover:text-gray-600">
             <Instagram size={20} />
           </a>
-          <a href="#" className="text-gray-800">
+          <a href="#" className="text-gray-800 hover:text-gray-600">
             <Twitter size={20} />
           </a>
         </div>
         
         {/* Investment disclaimer */}
-        <div className="border border-gray-400 p-4 mb-6">
+        <div className="border border-gray-400 p-4 mb-6 rounded-lg">
           <h3 className="font-medium mb-2">Investment and Insurance Products are:</h3>
           <ul className="list-disc pl-5 space-y-1 text-sm">
             <li>Not Insured by the FDIC or Any Federal Government Agency</li>
@@ -82,7 +81,7 @@ export default function Footer() {
           <p>Deposit products offered by Wells Fargo Bank, N.A. Member FDIC.</p>
         </div>
         
-        <div className="mt-6 flex items-center">
+        <div className="mt-6 flex items-center justify-center md:justify-start">
           <span className="inline-block mr-2">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <rect width="20" height="20" rx="2" fill="#f5f5f5" />
@@ -92,7 +91,7 @@ export default function Footer() {
           <span className="text-sm text-gray-700">Equal Housing Lender</span>
         </div>
         
-        <div className="mt-4 text-sm text-gray-600">
+        <div className="mt-4 text-sm text-gray-600 text-center md:text-left">
           <p>PM-09282026-7798034.1.1</p>
           <p className="mt-1">LRC-0325</p>
           <p className="mt-3">© 1999 - 2025 Wells Fargo. NMLSR ID 399801</p>
