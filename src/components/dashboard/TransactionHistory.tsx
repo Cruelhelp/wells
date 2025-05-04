@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, ArrowUpRight, ArrowDownRight, MoreVertical } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, ArrowDownRight, MoreVertical, ChevronsUpDown, FileText, Send, Wallet, Bell } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface Transaction {
   id: string;
@@ -11,11 +12,6 @@ interface Transaction {
   transaction_type: string;
 }
 
-interface TransactionHistoryProps {
-  transactions: Transaction[];
-  accounts: Account[];
-}
-
 interface Account {
   id: string;
   account_type: string;
@@ -24,7 +20,18 @@ interface Account {
   balance: number;
 }
 
+interface TransactionHistoryProps {
+  transactions: Transaction[];
+  accounts: Account[];
+}
+
 const TransactionHistory = ({ transactions, accounts }: TransactionHistoryProps) => {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate('/statement');
+  };
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -33,65 +40,79 @@ const TransactionHistory = ({ transactions, accounts }: TransactionHistoryProps)
     }).format(amount);
   };
 
-  const chequingAccount = accounts.find(account => account.account_type === 'Chequing');
-  const availableBalance = chequingAccount ? chequingAccount.balance : 0;
+  const primaryAccount = accounts.find(account => account.account_type === 'Checking') || accounts[0];
+  const currentBalance = primaryAccount ? primaryAccount.balance : 0;
+  const pendingWithdrawals = 0.00;
+  const pendingDeposits = 0.00;
+  const availableBalance = currentBalance - pendingWithdrawals + pendingDeposits;
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-0 px-2 md:px-0">
-        <div className="flex items-center gap-2">
-          <h2 className="text-lg md:text-xl font-semibold text-gray-800">Recent Activity</h2>
-          <span className="text-xs text-gray-500">(Last 30 days)</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <button className="text-xs md:text-sm text-blue-700 font-semibold hover:underline">View all activity</button>
-          <button className="hover:bg-gray-100 rounded-full p-1">
-            <MoreVertical className="h-4 w-4 md:h-5 md:w-5 text-gray-500" />
+    <Card className="shadow-sm">
+      <CardHeader className="py-2 px-3 md:px-4">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg font-semibold text-gray-800">Activity Summary</CardTitle>
+          <button className="text-gray-500 hover:text-gray-700 flex items-center text-sm">
+            Switch Account <ChevronsUpDown className="ml-2 h-4 w-4" />
           </button>
         </div>
-      </div>
+        <div className="flex items-center justify-around mt-2 border-t pt-2">
+          <button className="text-gray-500 hover:text-gray-700 flex flex-col items-center text-xs">
+            <Wallet className="h-4 w-4 mb-1" />
+            Transfer Money
+          </button>
+          <button className="text-gray-500 hover:text-gray-700 flex flex-col items-center text-xs">
+            <Send className="h-4 w-4 mb-1" />
+            Send Money
+          </button>
+          <Link to="/statement" className="text-gray-500 hover:text-gray-700 flex flex-col items-center text-xs">
+            <FileText className="h-4 w-4 mb-1" />
+            View Statements
+          </Link>
+          <button className="text-gray-500 hover:text-gray-700 flex flex-col items-center text-xs">
+            <Bell className="h-4 w-4 mb-1" />
+            Manage Alerts
+          </button>
+        </div>
+      </CardHeader>
 
-      <Card className="shadow-sm">
-        <CardHeader className="pb-2">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-0">
-            <CardTitle className="text-base md:text-lg">Checking Account</CardTitle>
-            <div className="flex items-center gap-2">
-              <button className="text-xs md:text-sm text-blue-700 font-semibold hover:underline">Transfer money</button>
-              <button className="text-xs md:text-sm text-blue-700 font-semibold hover:underline">View statements</button>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className="p-0">
-          <div className="divide-y">
-            {transactions.map((transaction) => (
-              <div key={transaction.id} className="p-3 md:p-4 hover:bg-gray-50 transition-colors duration-200">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-start gap-3">
-                    <div className="mt-1">
-                      {transaction.transaction_type === 'Deposit' ? (
-                        <ArrowDownRight className="h-5 w-5 text-green-600" />
-                      ) : (
-                        <ArrowUpRight className="h-5 w-5 text-red-600" />
-                      )}
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-sm md:text-base font-medium text-gray-900">{transaction.description}</span>
-                      <span className="text-xs text-gray-500 mt-0.5">{transaction.transaction_date}</span>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-end">
-                    <span className={`text-sm md:text-base font-medium ${transaction.transaction_type === 'Deposit' ? 'text-green-600' : 'text-red-600'}`}>
-                      {transaction.transaction_type === 'Deposit' ? '+' : '-'}{formatCurrency(Math.abs(transaction.amount))}
-                    </span>
-                    <span className="text-xs text-gray-500 mt-0.5">Available balance</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+      <CardContent className="space-y-0 py-2 px-0">
+        <div 
+          className="flex items-center justify-between py-2 px-3 md:px-4 border-b hover:bg-gray-50 cursor-pointer transition-colors duration-150"
+          onClick={handleNavigate}
+        >
+          <p className="text-gray-600 text-sm">Current posted balance</p>
+          <p className="font-semibold text-sm">{formatCurrency(currentBalance)}</p>
+        </div>
+        <div 
+          className="flex items-center justify-between py-2 px-3 md:px-4 border-b hover:bg-gray-50 cursor-pointer transition-colors duration-150"
+          onClick={handleNavigate}
+        >
+          <p className="text-gray-600 text-sm">Pending withdrawals/debits</p>
+          <p className="font-semibold text-sm">{formatCurrency(pendingWithdrawals)}</p>
+        </div>
+        <div 
+          className="flex items-center justify-between py-2 px-3 md:px-4 border-b hover:bg-gray-50 cursor-pointer transition-colors duration-150"
+          onClick={handleNavigate}
+        >
+          <p className="text-gray-600 text-sm">Pending deposits/credits</p>
+          <p className="font-semibold text-sm">{formatCurrency(pendingDeposits)}</p>
+        </div>
+        <div 
+          className="flex items-center justify-between py-2 px-3 md:px-4 border-b hover:bg-gray-50 cursor-pointer transition-colors duration-150"
+          onClick={handleNavigate}
+        >
+          <p className="text-gray-600 text-sm">Available balance</p>
+          <p className="font-semibold text-sm">{formatCurrency(availableBalance)}</p>
+        </div>
+        <div 
+          className="flex items-center justify-between py-2 px-3 md:px-4 border-b last:border-b-0 hover:bg-gray-50 cursor-pointer transition-colors duration-150"
+          onClick={handleNavigate}
+        >
+          <p className="text-gray-600 text-sm">Monthly Service Fee Summary</p>
+          <p className="font-semibold text-sm">$0.00</p> 
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

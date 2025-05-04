@@ -24,7 +24,7 @@ export default function TopNavBar() {
         {/* Logo */}
         <div className="flex items-center space-x-6">
           <Link to="/">
-            <img src="/logo.webp" alt="Wells Fargo Logo" className="h-6" />
+            <img src="/logo.webp" alt="Wells Fargo Logo" className="h-6 w-auto" />
           </Link>
         </div>
         {/* Right Side: Icons, Sign Off, Welcome, separated by dividers */}
