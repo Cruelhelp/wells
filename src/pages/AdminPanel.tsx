@@ -33,9 +33,9 @@ export default function AdminPanel() {
 
   if (!adminLoggedIn) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <form onSubmit={handleLogin} className="bg-white p-8 rounded shadow-md w-96 space-y-4">
-          <h2 className="text-2xl font-bold mb-2 text-center">Admin Login</h2>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+        <form onSubmit={handleLogin} className="bg-white p-6 md:p-8 rounded-lg shadow-md w-full max-w-sm space-y-4">
+          <h2 className="text-xl md:text-2xl font-bold mb-2 text-center">Admin Login</h2>
           <Input
             type="text"
             placeholder="Admin Username"
@@ -51,19 +51,19 @@ export default function AdminPanel() {
             required
           />
           {error && <div className="text-red-600 text-sm text-center">{error}</div>}
-          <Button type="submit" className="w-full bg-wellsfargo-red text-white">Sign In</Button>
+          <Button type="submit" className="w-full bg-wellsfargo-red text-white hover:bg-red-700">Sign In</Button>
         </form>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-50 py-10">
-      <h1 className="text-3xl font-bold mb-6 text-wellsfargo-red">Admin Panel</h1>
-      <div className="bg-white rounded shadow p-6 w-full max-w-md">
-        <h2 className="text-xl font-semibold mb-4">Edit User: bobbyb343</h2>
+    <div className="min-h-screen flex flex-col items-center bg-gray-50 py-8 md:py-10 px-4">
+      <h1 className="text-2xl md:text-3xl font-bold mb-6 text-wellsfargo-red">Admin Panel</h1>
+      <div className="bg-white rounded-lg shadow p-6 w-full max-w-md">
+        <h2 className="text-lg md:text-xl font-semibold mb-4">Edit User: bobbyb343</h2>
         <div className="mb-4">
-          <label className="block text-gray-700 mb-1">Balance ($)</label>
+          <label className="block text-sm text-gray-700 mb-1">Balance ($)</label>
           <Input
             type="number"
             value={editBalance}
@@ -77,11 +77,12 @@ export default function AdminPanel() {
             checked={editOnHold}
             onChange={e => setEditOnHold(e.target.checked)}
             id="onHold"
+            className="h-4 w-4 text-wellsfargo-red focus:ring-wellsfargo-red border-gray-300 rounded"
           />
-          <label htmlFor="onHold" className="text-gray-700">On Hold</label>
+          <label htmlFor="onHold" className="text-sm text-gray-700">On Hold</label>
         </div>
-        <Button onClick={handleSave} className="bg-wellsfargo-red text-white w-full">Save Changes</Button>
-        <div className="mt-6 text-sm text-gray-600">
+        <Button onClick={handleSave} className="bg-wellsfargo-red text-white w-full hover:bg-red-700">Save Changes</Button>
+        <div className="mt-6 text-sm text-gray-600 border-t pt-4 space-y-1">
           <div><span className="font-semibold">Current Balance:</span> ${bobby.balance.toLocaleString()}</div>
           <div><span className="font-semibold">On Hold:</span> {bobby.onHold ? 'Yes' : 'No'}</div>
         </div>

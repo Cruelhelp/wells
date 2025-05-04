@@ -10,6 +10,8 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Statement from "./pages/Statement";
 import AdminPanel from "./pages/AdminPanel";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +21,8 @@ const App = () => (
       <AuthProvider>
         <Toaster />
         <Sonner />
+        <Analytics />
+        <SpeedInsights />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
