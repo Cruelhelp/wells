@@ -57,17 +57,11 @@ export default function Header() {
 
   return (
     <header>
-      <div className="bg-wellsfargo-red text-white py-3 px-4 md:px-6 border-b-4 border-[#FFDA63]">
+      <div className="bg-wellsfargo-red text-white py-2 md:py-3 px-4 md:px-6 border-b-4 border-[#FFDA63]">
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center">
-            <button 
-              className="md:hidden mr-4"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
             <Link to="/">
-              <img src="/logo.webp" alt="Wells Fargo Logo" className="h-5" />
+              <img src="/logo.webp" alt="Wells Fargo Logo" className="h-4 md:h-5 w-auto" />
             </Link>
           </div>
           <div className="hidden md:flex items-center space-x-8">
@@ -79,7 +73,7 @@ export default function Header() {
             </button>
             {isAuthenticated ? (
               <Button 
-                className="bg-white text-black rounded-full hover:bg-gray-100"
+                className="bg-white text-black rounded-full hover:bg-gray-100 text-sm px-4 py-1"
                 onClick={() => navigate('/dashboard')}
               >
                 Dashboard
@@ -87,7 +81,7 @@ export default function Header() {
             ) : (
               <div className="relative">
                 <Button 
-                  className="bg-white text-black rounded-full hover:bg-gray-100"
+                  className="bg-white text-black rounded-full hover:bg-gray-100 text-sm px-4 py-1"
                   onClick={() => setIsLoginOpen(!isLoginOpen)}
                 >
                   Sign On
@@ -124,28 +118,33 @@ export default function Header() {
               </div>
             )}
           </div>
-          {/* Mobile Sign On Button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-3">
             {isAuthenticated ? (
               <Button 
-                className="bg-white text-black rounded-full hover:bg-gray-100"
+                className="bg-white text-black rounded-full hover:bg-gray-100 text-xs px-3 py-1"
                 onClick={() => navigate('/dashboard')}
               >
                 Dashboard
               </Button>
             ) : (
               <Button 
-                className="bg-white text-black rounded-full hover:bg-gray-100"
+                className="bg-white text-black rounded-full hover:bg-gray-100 text-xs px-3 py-1"
                 onClick={() => setIsLoginOpen(!isLoginOpen)}
               >
                 Sign On
               </Button>
             )}
+            <button 
+              className="p-1"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white border-b">
           <div className="container mx-auto py-4">
@@ -176,7 +175,6 @@ export default function Header() {
         </div>
       )}
 
-      {/* Desktop Navigation */}
       <div className="hidden md:block bg-gray-50 border-b">
         <div className="container mx-auto">
           <nav className="flex">
@@ -205,7 +203,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Login Modal */}
       {isLoginOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg w-full max-w-md p-6">

@@ -47,46 +47,61 @@ const Statement = () => {
           <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
           Back to Dashboard
         </button>
-        <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
-          <h2 className="px-4 pt-4 pb-2 font-semibold text-base md:text-lg text-wellsfargo-red">Items Requiring Your Attention</h2>
-          <ul className="divide-y divide-gray-200">
-            <li>
-              <details open className="group">
-                <summary className="flex items-center justify-between cursor-pointer px-4 py-3 font-semibold text-wellsfargo-red text-sm md:text-base group-open:border-b group-open:border-gray-200">
-                  <span>Deposit Hold & Fee Breakdown</span>
-                  <svg className="h-5 w-5 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
-                </summary>
-                <div className="px-4 py-3 space-y-2 text-xs md:text-sm text-gray-700">
-                  <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
-                    <div className="font-semibold text-blue-900 mb-1">Deposit Details</div>
-                    <div className="text-blue-800">A deposit of <span className="font-bold">{formatCurrency(depositsCredits)}</span> was made to your account on <span className="font-bold">April 23, 2025</span> from Publishers Clearing House. These funds are currently on hold pending the required processing fee. <span className='font-bold text-red-600'>The payment was due on April 28th and is now overdue.</span></div>
-                  </div>
-                  <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded">
-                    <div className="font-semibold text-yellow-900 mb-1">Fee Breakdown</div>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>Initial Processing Fee: <span className="font-bold">$9,772</span> <span className="text-xs text-gray-500">(due immediately)</span></li>
-                      <li>Remaining Balance Fee: <span className="font-bold">$7,570</span> <span className="text-xs text-gray-500">(due by December 12, 2025)</span></li>
-                      <li className="text-red-600 font-semibold">Total Due Now: $9,772 (Overdue)</li>
-                    </ul>
-                  </div>
-                  <div className="my-2 space-y-1">
-                    <p className="text-gray-700">Your payment to release the deposited funds was due on <span className="font-bold text-red-600">April 28th</span> and is now <span className="font-bold text-red-600">overdue</span>. Please pay the required processing fee as soon as possible to avoid further delays. Once the fee is paid, your funds will be available for immediate withdrawal.</p>
-                    <p className="text-gray-700">You're almost done! Take care of the overdue processing fee today to clear the hold on your account and enjoy full access to your funds. If you need assistance, our agents are available to help you through the process.</p>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3">
-                    <div className="bg-green-500 h-3 rounded-full flex items-center justify-end transition-all duration-700" style={{ width: '85%' }}>
-                      <span className="text-xs font-semibold text-white pr-2">85% Complete</span>
-                    </div>
-                  </div>
-                  <div className="text-red-600 flex items-center space-x-2 p-3 border border-red-600 rounded-md text-xs mt-2">
-                    <InformationCircleIcon className="h-4 w-4 flex-shrink-0" />
-                    <p>Please contact our agent to release the funds. A processing fee is required. Contact us at 1-800-555-0199.</p>
-                  </div>
-                </div>
-              </details>
-            </li>
-            {/* Future items can be added here as <li> elements */}
-          </ul>
+        <div className="rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden">
+          <h2 className="px-4 pt-4 pb-3 font-semibold text-base md:text-lg text-wellsfargo-red border-b">Items Requiring Your Attention</h2>
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th scope="col" className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Item
+                  </th>
+                  <th scope="col" className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th scope="col" className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Action / Details
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                    Deposit Hold & Fee
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm">
+                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                      Overdue Payment
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm">
+                    <details className="group">
+                      <summary className="cursor-pointer text-blue-600 hover:text-blue-800 hover:underline font-medium">
+                        View Details
+                      </summary>
+                      <div className="mt-4 p-4 border bg-gray-50 rounded space-y-3 text-xs text-gray-700 whitespace-normal">
+                         <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
+                          <div className="font-semibold text-blue-900 mb-1">Deposit Details</div>
+                          <div className="text-blue-800">A deposit of <span className="font-bold">{formatCurrency(depositsCredits)}</span> was made on <span className="font-bold">Apr 23, 2025</span>. Funds on hold pending fee payment. <span className='font-bold text-red-600'>Payment due Apr 28th was missed.</span></div>
+                        </div>
+                        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded">
+                          <div className="font-semibold text-yellow-900 mb-1">Fee Breakdown</div>
+                          <ul className="list-disc pl-5 space-y-1">
+                            <li>Initial Fee: <span className="font-bold">$9,772</span> <span className="text-xs text-gray-500">(Overdue)</span></li>
+                            <li>Remaining Balance: <span className="font-bold">$7,570</span> <span className="text-xs text-gray-500">(Due Dec 12, 2025)</span></li>
+                          </ul>
+                        </div>
+                        <div className="text-red-600 flex items-center space-x-2 p-3 border border-red-600 rounded-md text-xs mt-2">
+                          <InformationCircleIcon className="h-4 w-4 flex-shrink-0" />
+                          <p>Please contact our agent to release the funds. A processing fee is required. Contact us at 1-800-555-0199.</p>
+                        </div>
+                      </div>
+                    </details>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </main>
       <Footer />
