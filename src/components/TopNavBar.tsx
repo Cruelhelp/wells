@@ -4,7 +4,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/components/ui/sonner';
 import { Mail, Search, User, ChevronDown, Lock, Menu, X } from 'lucide-react';
 
-export default function TopNavBar() {
+// Define props type including the optional callback
+interface TopNavBarProps {
+  onLogoClick?: () => void; // Optional function prop
+}
+
+export default function TopNavBar({ onLogoClick }: TopNavBarProps) { // Destructure the prop
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [isSigningOff, setIsSigningOff] = useState(false);
@@ -24,7 +29,19 @@ export default function TopNavBar() {
       <div className="container mx-auto flex items-center justify-between py-2 px-4">
         {/* Logo */}
         <div className="flex items-center">
-          <Link to="/">
+          {/* Add onClick handler to the Link */}
+          <Link 
+            to="/dashboard" 
+            onClick={(e) => {
+              // Prevent default link behavior if needed, though Link handles it
+              // e.preventDefault(); 
+              if (onLogoClick) {
+                console.log("Logo clicked, calling onLogoClick..."); // Add log
+                onLogoClick(); // Call the passed function
+              }
+              // Navigation still happens via the Link's 'to' prop
+            }}
+          >
             <img src="/logo.webp" alt="Wells Fargo Logo" className="h-5 w-auto" />
           </Link>
         </div>

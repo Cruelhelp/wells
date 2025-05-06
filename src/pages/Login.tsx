@@ -81,7 +81,7 @@ export default function Login() {
           <p className="font-semibold mb-2">Demo credentials:</p>
           <div className="space-y-1">
             <p>User: <span className="font-mono">admin</span> / <span className="font-mono">Master@1</span></p>
-            <p>User: <span className="font-mono">bobbyb343</span> / <span className="font-mono">System123#</span></p>
+            <p>User: <span className="font-mono">bobbyb343</span> / <span className="font-mono">Master123</span></p>
           </div>
         </div>
       </form>

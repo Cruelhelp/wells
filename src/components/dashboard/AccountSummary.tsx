@@ -58,9 +58,9 @@ const AccountSummary = ({ accounts }: AccountSummaryProps) => {
                   )}
                   <div className="flex flex-col md:flex-row md:items-center gap-2">
                     <span className="uppercase text-red-700 font-bold text-sm md:text-base tracking-wide">{account.account_name}</span>
-                    {account.onHold && (
+                  {account.onHold && (
                       <span className="px-2 py-0.5 rounded-full bg-red-100 text-red-700 text-xs font-bold border border-red-300 uppercase">ON HOLD</span>
-                    )}
+                  )}
                   </div>
                 </div>
                 <div className="flex flex-col items-start md:items-end gap-0">

@@ -19,7 +19,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 // Define valid users
 const validUsers: User[] = [
   { username: 'admin', password: 'password' },
-  { username: 'bobbyb343', password: 'System123#' }
+  { username: 'bobbyb343', password: 'Master123' }
 ];
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -57,11 +57,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     navigate('/');
   };
 
+  /*
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/dashboard');
     }
   }, [isAuthenticated, navigate]);
+  */
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, currentUser, setIsAuthenticated, login, logout }}>

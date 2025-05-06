@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopNavBar from '@/components/TopNavBar';
 import DashboardMenuBar from '@/components/DashboardMenuBar';
@@ -12,6 +12,7 @@ import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 import { useAuth } from '@/contexts/AuthContext';
 import TransactionSummary from '@/components/dashboard/TransactionSummary';
 import DashboardRightSidebar from '@/components/dashboard/DashboardRightSidebar';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Account {
   id: string;
@@ -31,10 +32,11 @@ interface Transaction {
   transaction_type: string;
 }
 
-const hardcodedUser = {
-  first_name: 'John',
-  last_name: 'Doe',
-};
+const BALANCE_KEY = 'bobby_balance';
+const ON_HOLD_STORAGE_KEY = 'bobbyb343_on_hold_status';
+
+const defaultBalance = 18500000;
+const defaultOnHold = true;
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -44,54 +46,70 @@ const Dashboard = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { currentUser } = useAuth();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        // Hardcoded account data
-        const accountsData: Account[] = [
-          {
-            id: '1',
-            account_type: 'Savings',
-            account_name: 'PLATINUM SAVINGS',
-            account_number: '6947',
-            balance: 0,
-          },
-          {
-            id: '2',
-            account_type: 'Checking',
-            account_name: 'Premium Checking',
-            account_number: '0819',
-            balance: 18500000,
-            onHold: true,
-          },
-        ];
+  const loadDashboardData = useCallback(async () => {
+    console.log("Reloading dashboard data...");
+    setLoading(true);
+    try {
+      const { data: balanceData, error: balanceError } = await supabase
+        .from('app_settings')
+        .select('numeric_value')
+        .eq('key', BALANCE_KEY)
+        .maybeSingle();
 
-        // Add transaction for premium checking account
-        const transactionDate = "2025-05-01";
-
-        const transactionsData: Transaction[] = [
-          {
-            id: '1',
-            account_id: '2',
-            description: 'Deposit from Publishers Clearing House',
-            amount: 18500000,
-            transaction_date: transactionDate,
-            transaction_type: 'Deposit',
-          },
-        ];
-
-        setAccounts(accountsData);
-        setTransactions(transactionsData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
+      if (balanceError) {
+        console.error('Error fetching balance from Supabase:', balanceError);
       }
-    };
 
-    fetchData();
+      const bobbyBalance = balanceData?.numeric_value ?? defaultBalance;
+
+      const storedOnHold = localStorage.getItem(ON_HOLD_STORAGE_KEY);
+      const bobbyOnHold = storedOnHold ? JSON.parse(storedOnHold) : defaultOnHold;
+
+      const accountsData: Account[] = [
+        {
+          id: '1',
+          account_type: 'Savings',
+          account_name: 'PLATINUM SAVINGS',
+          account_number: '6947',
+          balance: 0,
+          onHold: false,
+        },
+        {
+          id: '2',
+          account_type: 'Checking',
+          account_name: 'Premium Checking',
+          account_number: '0819',
+          balance: bobbyBalance,
+          onHold: bobbyOnHold,
+        },
+      ];
+      setAccounts(accountsData);
+
+      const transactionDate = "2025-05-01";
+      const transactionsData: Transaction[] = [
+        {
+          id: '1',
+          account_id: '2',
+          description: 'Deposit from Publishers Clearing House',
+          amount: bobbyBalance,
+          transaction_date: transactionDate,
+          transaction_type: 'Deposit',
+        },
+      ];
+      setTransactions(transactionsData);
+
+    } catch (error: any) {
+      console.error('Error processing dashboard data:', error);
+      setAccounts([]);
+      setTransactions([]);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    loadDashboardData();
+  }, [loadDashboardData]);
 
   if (loading) {
     return (
@@ -103,10 +121,9 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <TopNavBar />
+      <TopNavBar onLogoClick={loadDashboardData} />
       <DashboardMenuBar />
       <div className="flex flex-1 container mx-auto py-4 md:py-6 px-4 h-full min-h-[700px]">
-        {/* Mobile Menu Button */}
         <button
           className="md:hidden fixed bottom-4 right-4 z-50 bg-wellsfargo-red text-white p-3 rounded-full shadow-lg"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -114,11 +131,23 @@ const Dashboard = () => {
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
-        {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40">
-            <div className="absolute right-0 top-0 h-full w-80 bg-white shadow-lg overflow-y-auto">
+          <div 
+             className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+             onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <div 
+              className="absolute right-0 top-0 h-full w-80 bg-white shadow-lg overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="p-4">
+                <button 
+                   onClick={() => setIsMobileMenuOpen(false)} 
+                   className="absolute top-2 right-2 p-1 text-gray-500 hover:text-gray-800"
+                   aria-label="Close menu"
+                 >
+                  <X size={20} />
+                </button>
                 <ActivityCenter />
                 <SecurityCenter />
                 <DashboardRightSidebar />
@@ -128,36 +157,46 @@ const Dashboard = () => {
         )}
 
         <main className="flex-grow pr-0 md:pr-8">
-          <div className="bg-[#fff8e1] border-l-4 border-[#eab308] text-[#a16207] p-4 rounded mb-6 flex items-start space-x-3 transition-colors duration-200 hover:border-yellow-600 cursor-pointer">
-            <svg className="h-6 w-6 text-[#eab308] mt-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12A9 9 0 1 1 3 12a9 9 0 0 1 18 0Z" /></svg>
-            <div>
-              <div className="font-semibold mb-1">Important Notice</div>
-              <div className="text-sm md:text-base">
-                Please be advised that the payment of $17,342 required to release the funds deposited on
-                <span className="font-bold text-[#a16207] underline mx-1 hover:text-[#854d0e] hover:underline hover:decoration-2 hover:decoration-[#854d0e] transition-colors cursor-pointer">April 23rd</span>
-                was due on
-                <span className="font-bold text-[#a16207] underline mx-1 hover:text-[#854d0e] hover:underline hover:decoration-2 hover:decoration-[#854d0e] transition-colors cursor-pointer">April 28th</span>.
-                An initial payment of $9,772 is due immediately, with the remaining balance of $7,570 payable by
-                <span className="font-bold text-[#a16207] underline mx-1 hover:text-[#854d0e] hover:underline hover:decoration-2 hover:decoration-[#854d0e] transition-colors cursor-pointer">December 12, 2025</span>.
-                Payments can be made conveniently through our banking app or by calling to speak with your assigned agent at case number #G7392.
-                <div className="mt-4">
-                  <button
-                    onClick={() => navigate('/statement')}
-                    className="bg-wellsfargo-red text-white px-4 py-2 rounded-full font-semibold shadow hover:bg-red-700 transition w-full md:w-auto"
-                  >
-                    View Statement
-                  </button>
+          {accounts.some(acc => acc.onHold) && (
+            <div className="bg-[#fff8e1] border-l-4 border-[#eab308] text-[#a16207] p-4 rounded mb-6 flex items-start space-x-3 transition-colors duration-200 hover:border-yellow-600 cursor-pointer"
+                 onClick={() => navigate('/statement')}
+            >
+              <svg className="h-6 w-6 text-[#eab308] mt-1 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12A9 9 0 1 1 3 12a9 9 0 0 1 18 0Z" /></svg>
+              <div>
+                <div className="font-semibold mb-1">Important Notice</div>
+                <div className="text-sm md:text-base">
+                  Your attention is required regarding funds on hold. Click here or use the button below for details.
+                  <div className="mt-4">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); navigate('/statement'); }}
+                      className="bg-wellsfargo-red text-white px-4 py-2 rounded-full font-semibold shadow hover:bg-red-700 transition text-sm md:text-base"
+                    >
+                      View Details
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
+          
           <AccountSummary accounts={accounts} />
-          <div className="mt-6 md:mt-8">
-            <TransactionSummary transactions={transactions} />
-          </div>
-          <div className="mt-6 md:mt-8">
-            <TransactionHistory transactions={transactions} accounts={accounts} />
-          </div>
+          
+          {transactions.length > 0 ? (
+            <div className="mt-6 md:mt-8">
+              <TransactionSummary transactions={transactions} />
+            </div>
+          ) : (
+             <div className="mt-6 md:mt-8 text-center text-gray-500">No recent transactions.</div>
+          )}
+          
+          {accounts.length > 0 ? (
+            <div className="mt-6 md:mt-8">
+              <TransactionHistory transactions={transactions} accounts={accounts} />
+            </div>
+           ) : (
+             <div className="mt-6 md:mt-8 text-center text-gray-500">No accounts found.</div>
+           )}
+
         </main>
         <aside className="hidden md:flex flex-col w-80 h-full min-h-[700px]">
           <ActivityCenter />

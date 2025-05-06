@@ -82,7 +82,7 @@ export default function LoginForm({ onSuccess, showDemoCredentials = true, class
             <p>Password: password</p>
             <p className="mt-2">User 2:</p>
             <p>Username: bobbyb343</p>
-            <p>Password: System123#</p>
+            <p>Password: Master123</p>
           </div>
         </div>
       )}
